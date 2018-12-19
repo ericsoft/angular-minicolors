@@ -72,15 +72,14 @@
          * @param color
          */
         function setMinicolorsValue(color) {
-          if (isValidColor(color) && canSetValue()) {
+          // Allow empty string as a color to remove the value and update input
+          if ((color === '' || isValidColor(color)) && canSetValue()) {
             element.minicolors('value', color);
           }
         }
 
         //what to do if the value changed
         ngModel.$render = function() {
-
-
           //we are in digest or apply, and therefore call a timeout function
           $timeout(function() {
             var color = ngModel.$viewValue;
@@ -90,10 +89,10 @@
 
         //init method
         var initMinicolors = function() {
-
           if (!ngModel) {
             return;
           }
+
           var settings = getSettings();
           settings.change = function(hex) {
             scope.$apply(function() {
